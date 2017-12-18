@@ -11,6 +11,8 @@ import odoo
 from odoo.tools import config
 from . import Command
 
+from odoo.service.db import _create_empty_database, DatabaseExists
+
 _logger = logging.getLogger(__name__)
 
 
@@ -56,6 +58,14 @@ class Shell(Command):
 
     def init(self, args):
         config.parse_config(args)
+
+        try:
+            if not config.options['db_name']:
+                raise Exception("A database name is required, use `-d dbname`.")
+            _create_empty_database(config.options['db_name'])
+        except DatabaseExists as e:
+            pass
+
         odoo.cli.server.report_configuration()
         odoo.service.server.start(preload=[], stop=True)
         signal.signal(signal.SIGINT, raise_keyboard_interrupt)
