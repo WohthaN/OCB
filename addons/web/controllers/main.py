@@ -581,7 +581,7 @@ class WebClient(http.Controller):
     def version_info(self):
         return odoo.service.common.exp_version()
 
-    @http.route('/web/tests', type='http', auth="none")
+    @http.route('/web/tests', type='http', auth="user")
     def index(self, mod=None, **kwargs):
         return request.render('web.qunit_suite')
 
@@ -623,7 +623,7 @@ class Database(http.Controller):
 
     def _render_template(self, **d):
         d.setdefault('manage',True)
-        d['insecure'] = odoo.tools.config['admin_passwd'] == 'admin'
+        d['insecure'] = odoo.tools.config.verify_admin_password('admin')
         d['list_db'] = odoo.tools.config['list_db']
         d['langs'] = odoo.service.db.exp_list_lang()
         d['countries'] = odoo.service.db.exp_list_countries()

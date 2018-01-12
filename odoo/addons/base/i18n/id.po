@@ -9573,7 +9573,7 @@ msgstr "Guyana Perancis"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_hr_payroll
 msgid "French Payroll"
-msgstr ""
+msgstr "Penggajian Prancis"
 
 #. module: base
 #: model:res.country,name:base.tf
@@ -15989,6 +15989,12 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_th_reports
 msgid "Thailand - Accounting Reports"
+msgstr ""
+
+#. module: base
+#: code:addons/base/res/res_users.py:288
+#, python-format
+msgid "The \"App Switcher\" action cannot be selected as home action."
 msgstr ""
 
 #. module: base
