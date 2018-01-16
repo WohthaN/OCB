@@ -100,7 +100,7 @@ id,code,name,user_type_id:id,reconcile,chart_template_id:id
 2927,2927,creditori per fideiussioni ,account.data_account_type_current_liabilities,TRUE,l10n_it_chart_template_generic
 2931,2931,rischi per avalli ,account.data_account_type_current_liabilities,TRUE,l10n_it_chart_template_generic
 2932,2932,creditori per avalli ,account.data_account_type_current_liabilities,TRUE,l10n_it_chart_template_generic
-3101,3101,merci c/vendite ,account.data_account_type_revenue,TRUE,l10n_it_chart_template_generic
+3101,3101,merci c/vendite ,account.data_account_type_revenue,FALSE,l10n_it_chart_template_generic
 3103,3103,rimborsi spese di vendita ,account.data_account_type_other_income,TRUE,l10n_it_chart_template_generic
 3110,3110,resi su vendite ,account.data_account_type_other_income,TRUE,l10n_it_chart_template_generic
 3111,3111,ribassi e abbuoni passivi ,account.data_account_type_other_income,TRUE,l10n_it_chart_template_generic
