@@ -504,12 +504,14 @@ class PoFile(object):
     def next(self):
         trans_type = name = res_id = source = trad = None
         if self.extra_lines:
-            trans_type, name, res_id, source, trad, comments = self.extra_lines.pop(0)
+            trans_type, name, res_id, source, trad, comments, module = self.extra_lines.pop(0)
+            module = module.strip()
             if not res_id:
                 res_id = '0'
         else:
             comments = []
             targets = []
+            module = False
             line = None
             fuzzy = False
             while not line:
@@ -523,6 +525,9 @@ class PoFile(object):
                     line = line[2:].strip()
                     if not line.startswith('module:'):
                         comments.append(line)
+                    else:
+                        module = line.split(':')[1]
+                        module = module.strip()
                 elif line.startswith('#:'):
                     # Process the `reference` comments. Each line can specify
                     # multiple targets (e.g. model, view, code, selection,
@@ -586,14 +591,14 @@ class PoFile(object):
                 trans_type, name, res_id = targets.pop(0)
                 for t, n, r in targets:
                     if t == trans_type == 'code': continue
-                    self.extra_lines.append((t, n, r, source, trad, comments))
+                    self.extra_lines.append((t, n, r, source, trad, comments, module))
 
         if name is None:
             if not fuzzy:
                 _logger.warning('Missing "#:" formated comment at line %d for the following source:\n\t%s',
                                 self.cur_line(), source[:30])
             return next(self)
-        return trans_type, name, res_id, source, trad, '\n'.join(comments)
+        return trans_type, name, res_id, source, trad, '\n'.join(comments), module
     __next__ = next
 
     def write_infos(self, modules):
@@ -1040,7 +1045,7 @@ def trans_load_data(cr, fileobj, fileformat, lang, lang_name=None, verbose=True,
 
         elif fileformat == 'po':
             reader = PoFile(fileobj)
-            fields = ['type', 'name', 'res_id', 'src', 'value', 'comments']
+            fields = ['type', 'name', 'res_id', 'src', 'value', 'comments', 'module']
 
             # Make a reader for the POT file and be somewhat defensive for the
             # stable branch.
@@ -1107,8 +1112,9 @@ def trans_load_data(cr, fileobj, fileformat, lang, lang_name=None, verbose=True,
             if isinstance(res_id, pycompat.integer_types) or \
                     (isinstance(res_id, pycompat.string_types) and res_id.isdigit()):
                 dic['res_id'] = int(res_id)
-                if module_name:
+                if module_name and not dic['module']:
                     dic['module'] = module_name
+
             else:
                 # res_id is an xml id
                 dic['res_id'] = None
@@ -1116,8 +1122,9 @@ def trans_load_data(cr, fileobj, fileformat, lang, lang_name=None, verbose=True,
                 if '.' in res_id:
                     dic['module'], dic['imd_name'] = res_id.split('.', 1)
                 else:
-                    dic['module'], dic['imd_name'] = module_name, res_id
-
+                    dic['imd_name'] = res_id
+                    if not dic['module']:
+                        dic['module'] = module_name
             irt_cursor.push(dic)
 
         # First process the entries from the PO file (doing so also fills/removes

@@ -94,6 +94,7 @@ class IrTranslationImport(object):
         query = """ INSERT INTO %s (name, lang, res_id, src, type, imd_model, module, imd_name, value, state, comments)
                     VALUES (%%(name)s, %%(lang)s, %%(res_id)s, %%(src)s, %%(type)s, %%(imd_model)s, %%(module)s,
                             %%(imd_name)s, %%(value)s, %%(state)s, %%(comments)s) """ % self._table
+
         self._cr.execute(query, params)
 
     def finish(self):
@@ -151,7 +152,8 @@ class IrTranslationImport(object):
             cr.execute(""" UPDATE ONLY %s AS irt
                            SET value = ti.value,
                                src = ti.src,
-                               state = 'translated'
+                               state = 'translated',
+                               module = ti.module
                            FROM %s AS ti
                           WHERE %s
                             AND ti.value IS NOT NULL
