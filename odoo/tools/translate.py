@@ -1078,11 +1078,12 @@ def trans_load_data(cr, fileobj, fileformat, lang, lang_name=None, verbose=True,
                 self.comments = None
 
         pot_targets = defaultdict(Target)
-        for type, name, res_id, src, _ignored, comments in pot_reader:
+        for type, name, res_id, src, _ignored, comments, module in pot_reader:
             if type is not None:
                 target = pot_targets[src]
                 target.targets.add((type, name, res_id))
                 target.comments = comments
+                target.module = module
 
         # read the rest of the file
         irt_cursor = Translation._get_import_cursor()
