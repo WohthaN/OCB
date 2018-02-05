@@ -8,7 +8,7 @@
             <field name="description">General announcements for all employees.</field>
         </record>
 
-        <!-- notify all employees of module installation -->
+<!-- notify all employees of module installation
         <record model="mail.message" id="module_install_notification" context="{'mail_notify_noemail': True}">
             <field name="model">mail.channel</field>
             <field name="res_id" ref="mail.channel_all_employees"/>
@@ -18,5 +18,6 @@
             <field name="body"><![CDATA[<p>Welcome to the #general channel.</p>
             <p>This channel is accessible to all users to <b>easily share company information</b>.</p>]]></field>
         </record>
+ -->
     </data>
 </odoo>
