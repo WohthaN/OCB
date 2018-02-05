@@ -55,7 +55,7 @@ class Channel(models.Model):
         ('chat', 'Chat Discussion'),
         ('channel', 'Channel')],
         'Channel Type', default='channel')
-    description = fields.Text('Description')
+    description = fields.Text('Description', translate=True)
     uuid = fields.Char('UUID', size=50, index=True, default=lambda self: '%s' % uuid.uuid4())
     email_send = fields.Boolean('Send messages by email', default=False)
     # multi users channel
