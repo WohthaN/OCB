@@ -1478,8 +1478,8 @@ class Root(object):
                         else:
                             result = _dispatch_nodb()
                     else:
-                        result = ir_http._dispatch()
                         ir_http.pool.signal_caches_change()
+                        result = ir_http._dispatch()
                 else:
                     result = _dispatch_nodb()
 
