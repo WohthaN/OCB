@@ -235,7 +235,7 @@ class configmanager(object):
                          help="specify the language of the translation file. Use it with --i18n-export or --i18n-import")
         group.add_option("--i18n-export", dest="translate_out",
                          help="export all sentences to be translated to a CSV file, a PO file or a TGZ archive and exit")
-        group.add_option("--i18n-import", dest="translate_in",
+        group.add_option("--i18n-import", dest="translate_in", action="append",
                          help="import a CSV or a PO file with translations and exit. The '-l' option is required.")
         group.add_option("--i18n-overwrite", dest="overwrite_existing_translations", action="store_true", my_default=False,
                          help="overwrites existing translation terms on updating a module or importing a CSV or a PO file.")

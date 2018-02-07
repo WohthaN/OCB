@@ -115,9 +115,10 @@ def import_translation():
     registry = odoo.modules.registry.Registry.new(dbname)
     with odoo.api.Environment.manage():
         with registry.cursor() as cr:
-            odoo.tools.trans_load(
-                cr, config["translate_in"], config["language"], context=context,
-            )
+            for po_file in config["translate_in"]:
+                odoo.tools.trans_load(
+                    cr, po_file, config["language"], context=context,
+                )
 
 def main(args):
     check_root_user()
