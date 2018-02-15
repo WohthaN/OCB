@@ -557,12 +557,14 @@ class configmanager(object):
                 p.write(file(self.rcfile, 'w'))
                 if not rc_exists:
                     os.chmod(self.rcfile, 0600)
-            except IOError:
-                sys.stderr.write("ERROR: couldn't write the config file\n")
+            except IOError as e:
+                logging.getLogger(__name__).error("Couldn't write the config file: {trace}".format(trace=str(e)))
+                raise
 
-        except OSError:
+        except OSError as e:
             # what to do if impossible?
-            sys.stderr.write("ERROR: couldn't create the config directory\n")
+            logging.getLogger(__name__).error("Couldn't create the config directory: {trace}".format(trace=str(e)))
+            raise
 
     def get(self, key, default=None):
         return self.options.get(key, default)
