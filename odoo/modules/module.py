@@ -79,7 +79,11 @@ class AddonsHook(object):
 
         # execute source in context of module *after* putting everything in
         # sys.modules, so recursive import works
-        exec(open(modfile, 'rb').read(), new_mod.__dict__)
+        try:
+            exec(open(modfile, 'rb').read(), new_mod.__dict__)
+        except:
+            _logger.error("ERROR LOADING MODULE {name} ({odoo}, {path})".format(name=name, odoo=odoo_name, path=path))
+            raise
 
         # people import openerp.addons and expect openerp.addons.<module> to work
         setattr(odoo.addons, addon_name, new_mod)
