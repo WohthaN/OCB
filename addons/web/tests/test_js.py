@@ -28,26 +28,26 @@ class WebSuite(odoo.tests.HttpCase):
     def _check_only_call(self, suite):
         # As we currently aren't in a request context, we can't render `web.layout`.
         # redefinied it as a minimal proxy template. To avoid reference errors, any template
-        # depending on it is minimized as well.
+        # inheriting from it is overwritten as well.
+
+        def overwrite_template_and_all_its_inheriting_descendants(template, new_content):
+            View_model = self.env['ir.ui.view']
+            inheriting_view_archs = template.get_inheriting_views_arch(template.ids[0], None)
+            inheriting_templates_ids = [x[1] for x in
+                                    inheriting_view_archs if x[1] != template.ids[0]]  # get_inheriting_views_arch returns ["view content", view_id)]
+            for template_id in inheriting_templates_ids:
+                inheriting_template = View_model.browse(template_id)
+                overwrite_template_and_all_its_inheriting_descendants(inheriting_template, new_content)
+
+            template.write({'arch_db': new_content})
 
         minimal_template = """
         <t t-name="web.layout">
             <t t-raw="head"/>
         </t>
         """
-        View_model = self.env['ir.ui.view']
-
-        web_layout_view = self.env.ref('web.layout')
-
-        inheriting_views = web_layout_view.get_inheriting_views_arch(web_layout_view.ids[0], None)
-        inheriting_views = [x[1] for x in
-                            inheriting_views]  # get_inheriting_views_arch returns ["view content", view_id)]
-
-        for view_id in inheriting_views:
-            view = View_model.browse(view_id)
-            view.write({'arch_db': minimal_template})
-
-        web_layout_view.write({'arch_db': minimal_template})
+        web_layout_template = self.env.ref('web.layout')
+        overwrite_template_and_all_its_inheriting_descendants(web_layout_template, minimal_template)
 
         for asset in self.env['ir.qweb']._get_asset_content(suite, options={})[0]:
             filename = asset['filename']
