@@ -124,8 +124,8 @@ def init_logger():
                 handler = logging.handlers.WatchedFileHandler(logf)
             else:
                 handler = logging.FileHandler(logf)
-        except Exception:
-            sys.stderr.write("ERROR: couldn't create the logfile directory. Logging to the standard output.\n")
+        except Exception as e:
+            sys.stderr.write("ERROR: couldn't create the logfile directory. Logging to the standard output. {err}".format(err=str(e)))
 
     # Check that handler.stream has a fileno() method: when running OpenERP
     # behind Apache with mod_wsgi, handler.stream will have type mod_wsgi.Log,
