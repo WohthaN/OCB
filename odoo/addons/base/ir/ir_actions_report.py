@@ -398,6 +398,9 @@ class IrActionsReport(models.Model):
         except:
             raise
 
+        if err:
+            _logger.warning("wkhtmltopdf reported errors: {err}".format(err=err[-1000:]))
+
         with open(pdf_report_path, 'rb') as pdf_document:
             pdf_content = pdf_document.read()
 
