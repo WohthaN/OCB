@@ -199,7 +199,8 @@ def concat_xml(file_list):
     """
     checksum = hashlib.new('sha1')
     if not file_list:
-        return '', checksum.hexdigest()
+        # ElementTree.tostring with encoding utf-8 returns bytes
+        return b'', checksum.hexdigest()
 
     root = None
     for fname in file_list:
