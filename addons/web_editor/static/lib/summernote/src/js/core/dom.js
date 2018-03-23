@@ -139,7 +139,17 @@ define([
     var makePredByNodeName = function (nodeName) {
       nodeName = nodeName.toUpperCase();
       return function (node) {
-        return node && node.nodeName.toUpperCase() === nodeName;
+        try {
+            return node && node.nodeName.toUpperCase() === nodeName;
+            }
+         catch (e) {
+             /** TODO:
+              * This workaround is necessary to allow file uploads using selenium webdriver, which otherwise
+              * stumbles on the problem described in https://github.com/odoo/odoo/issues/23269
+              * A check for that exact error should be added; or a better fix should be found.
+              */
+              return true;
+          }
       };
     };
 
