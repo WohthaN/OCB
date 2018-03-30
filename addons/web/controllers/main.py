@@ -228,7 +228,7 @@ def fs2web(path):
     return '/'.join(path.split(os.path.sep))
 
 def manifest_glob(extension, addons=None, db=None, include_remotes=False):
-    if addons is None:
+    if not addons:
         addons = module_boot(db=db)
     else:
         addons = addons.split(',')
