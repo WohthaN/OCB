@@ -1463,6 +1463,7 @@ class Root(object):
                         odoo.registry(db).check_signaling()
                         with odoo.tools.mute_logger('odoo.sql_db'):
                             ir_http = request.registry['ir.http']
+                        result = ir_http._dispatch()
                     except (AttributeError, psycopg2.OperationalError, psycopg2.ProgrammingError):
                         # psycopg2 error or attribute error while constructing
                         # the registry. That means either
@@ -1476,8 +1477,6 @@ class Root(object):
                             result = werkzeug.utils.redirect('/web/database/selector')
                         else:
                             result = _dispatch_nodb()
-                    else:
-                        result = ir_http._dispatch()
                 else:
                     result = _dispatch_nodb()
 
