@@ -347,6 +347,7 @@ var BasicModel = AbstractModel.extend({
         var element = this.localData[id];
         var isNew = this.isNew(id);
         var rollback = 'rollback' in options ? options.rollback : isNew;
+        var initialOffset = element.offset;
         this._visitChildren(element, function (elem) {
             if (rollback && elem._savePoint) {
                 if (elem._savePoint instanceof Array) {
@@ -365,6 +366,7 @@ var BasicModel = AbstractModel.extend({
                 delete elem.tempLimitIncrement;
             }
         });
+        element.offset = initialOffset;
     },
     /**
      * Duplicate a record (by calling the 'copy' route)
@@ -3613,8 +3615,9 @@ var BasicModel = AbstractModel.extend({
                     if (isFieldInView) {
                         var field = r.fields[fieldName];
                         var fieldType = field.type;
+                        var rec;
                         if (fieldType === 'many2one') {
-                            var rec = self._makeDataPoint({
+                            rec = self._makeDataPoint({
                                 context: r.context,
                                 modelName: field.relation,
                                 data: {id: r._changes[fieldName]},
@@ -3622,8 +3625,18 @@ var BasicModel = AbstractModel.extend({
                             });
                             r._changes[fieldName] = rec.id;
                             many2ones[fieldName] = true;
+                        } else if (fieldType === 'reference') {
+                            var reference = r._changes[fieldName].split(',');
+                            rec = self._makeDataPoint({
+                                context: r.context,
+                                modelName: reference[0],
+                                data: {id: parseInt(reference[1])},
+                                parentID: r.id,
+                            });
+                            r._changes[fieldName] = rec.id;
+                            many2ones[fieldName] = true;
                         } else if (_.contains(['one2many', 'many2many'], fieldType)) {
-                            var x2mCommands = commands[0][2][fieldName];
+                            var x2mCommands = value[2][fieldName];
                             defs.push(self._processX2ManyCommands(r, fieldName, x2mCommands));
                         } else {
                             r._changes[fieldName] = self._parseServerValue(field, r._changes[fieldName]);
