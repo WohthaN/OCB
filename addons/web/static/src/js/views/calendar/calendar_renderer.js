@@ -442,7 +442,7 @@ return AbstractRenderer.extend({
         this.$('.o_calendar_sidebar_toggler')
             .toggleClass('fa-close', !fullWidth)
             .toggleClass('fa-chevron-left', fullWidth)
-            .attr('title', !fullWidth ? _('Close Sidebar') : _('Open Sidebar'));
+            .attr('title', !fullWidth ? _t('Close Sidebar') : _t('Open Sidebar'));
         this.$sidebar_container.toggleClass('o_sidebar_hidden', fullWidth);
         this.$sidebar.toggleClass('o_hidden', fullWidth);
 

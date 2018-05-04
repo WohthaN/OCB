@@ -8799,7 +8799,7 @@
      * @returns {*} Returns the result of `interceptor`.
      * @example
      *
-     * _('  abc  ')
+     * _t('  abc  ')
      *  .chain()
      *  .trim()
      *  .thru(function(value) {
@@ -15655,11 +15655,11 @@
      * _.vowels('fred');
      * // => ['e']
      *
-     * _('fred').vowels().value();
+     * _t('fred').vowels().value();
      * // => ['e']
      *
      * _.mixin({ 'vowels': vowels }, { 'chain': false });
-     * _('fred').vowels();
+     * _t('fred').vowels();
      * // => ['e']
      */
     function mixin(object, source, options) {

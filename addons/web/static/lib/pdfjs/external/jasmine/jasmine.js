@@ -126,7 +126,7 @@ jasmine.getEnv = function() {
  * @returns {Boolean}
  */
 jasmine.isArray_ = function(value) {
-  return jasmine.isA_("Array", value);
+  return jasmine.isA_t("Array", value);
 };
 
 /**
@@ -136,7 +136,7 @@ jasmine.isArray_ = function(value) {
  * @returns {Boolean}
  */
 jasmine.isString_ = function(value) {
-  return jasmine.isA_("String", value);
+  return jasmine.isA_t("String", value);
 };
 
 /**
@@ -146,7 +146,7 @@ jasmine.isString_ = function(value) {
  * @returns {Boolean}
  */
 jasmine.isNumber_ = function(value) {
-  return jasmine.isA_("Number", value);
+  return jasmine.isA_t("Number", value);
 };
 
 /**
